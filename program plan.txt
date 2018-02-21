@@ -1,0 +1,7 @@
+plan
+
+scrape data from website
+
+put data into database
+
+turn data into object
