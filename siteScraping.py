@@ -19,8 +19,12 @@ def drinkType(url):
 def beerInfo(respData):
     name = getName(respData)
     alcohol = getAlcohol(respData)    
-    amount = re.findall('([0-9]+ x [0-9]+)mL',str(respData))
-    return [name,alcohol,int(amount[0])]
+    amountSrt = re.findall('([0-9]+ x [0-9]+)mL',str(respData))
+    amount1 = re.findall('([0-9]+) x',str(respData))
+    amount2 = re.findall('x ([0-9]+)mL',str(respData))
+    amount = int(amount1[0])*int(amount2[0])
+    price = getPrice(respData)
+    return [name,alcohol, amount, price]
 #--------------------------
 
 #get information on wine type drinks
@@ -28,8 +32,8 @@ def wineInfo(respData):
     name = getName(respData)
     alcohol = getAlcohol(respData)  
     amount = re.findall(' ([0-9]+)mL</li',str(respData))
-    print(amount)
-    return [name, alcohol, int(amount[0])]
+    price = getPrice(respData)
+    return [name, alcohol, int(amount[0]), price]
 #--------------------------
 
 #returns name of product
@@ -43,3 +47,8 @@ def getAlcohol(respData):
     alcohol = re.findall('>([0-9.]+)%</td',str(respData))
     return float(alcohol[0])
 #--------------------------
+
+#returns price of product
+def getPrice(respData):
+    price = re.findall('/span>([0-9]+)<span',str(respData))
+    return float(price[0])
